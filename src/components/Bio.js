@@ -1,6 +1,6 @@
-import React from 'react'
 import { StaticQuery, graphql } from 'gatsby'
 import Image from 'gatsby-image'
+import React from 'react'
 
 import { rhythm } from '../utils/typography'
 
@@ -28,11 +28,10 @@ function Bio() {
               }}
             />
             <p>
-              Written by <strong>{author}</strong> who lives and works in San
-              Francisco building useful things.
+              Written by <strong>{author}</strong>.
               {` `}
-              <a href={`https://twitter.com/${social.twitter}`}>
-                You should follow him on Twitter
+              <a href={`https://www.github.com/${social.github}`} target="_blank" rel="noopener">
+                Github
               </a>
             </p>
           </div>
@@ -55,7 +54,7 @@ const bioQuery = graphql`
       siteMetadata {
         author
         social {
-          twitter
+          github
         }
       }
     }
