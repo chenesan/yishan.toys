@@ -1,6 +1,7 @@
 ---
 title: 不 evil 的 eval - Realms
 date: '2019-08-29T20:20:00.000Z'
+tags: ["javascript", "programming"]
 ---
 
 前不久看到 [Figma 的文章](https://www.figma.com/blog/how-we-built-the-figma-plugin-system/) 談到他們怎麼打造 plugin system。他們想要讓用戶可以自己寫 javascript 創造 plugin 來打造自己的工作流程。

@@ -1,6 +1,7 @@
 ---
 title: 貢獻開源專案的收穫和觀察
 date: '2019-01-27T09:44:00.000Z'
+tags: ["open source", "programming"]
 ---
 
 大約從今年1月初以來，我開始重拾貢獻開源專案，主要是在 [enzyme](https://github.com/airbnb/enzyme/) 這個專案上。這篇文章想談的倒不是如何貢獻開源專案、送PR的流程等等，只是這一個月以來的心得和觀察。

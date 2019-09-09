@@ -1,6 +1,7 @@
 ---
 title: myjson.com -- site for front-end demo
 date: '2019-09-07T16:04:00.000Z'
+tags: ["tools"]
 ---
 
 看到 http://myjson.com/ 輸入一個 json 可以立刻產生一個 api url，傳 GET 就會拿到資料，PUT 就會改資料。
