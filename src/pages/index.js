@@ -1,5 +1,6 @@
 import React from 'react'
-import { graphql } from 'gatsby'
+import { graphql, Link } from 'gatsby'
+import _ from 'lodash'
 
 import Bio from '../components/Bio'
 import Layout from '../components/Layout'
@@ -11,16 +12,35 @@ class BlogIndex extends React.Component {
     const { data } = this.props
     const siteTitle = data.site.siteMetadata.title
     const posts = data.allMarkdownRemark.edges
-
+    const tags = data.tags.group
+    const postList = <PostList posts={posts} />;
+    const tagsList = (
+      <section>
+        <h2>Tags</h2>
+        <ul>
+          {tags.map(group => (<li
+            key={group.fieldValue}
+            style={{ display: 'inline-block', marginRight: '.5em', marginBottom: '.5em' }}
+          >
+            <Link to={`/tags/${_.kebabCase(group.fieldValue)}`}>{group.fieldValue}</Link>
+          </li>))}
+        </ul>
+      </section>
+      
+    );
     return (
-      <Layout location={this.props.location} title={siteTitle}>
-        <SEO
-          title="All posts"
-          keywords={[`blog`, `gatsby`, `javascript`, `react`]}
-        />
-        <Bio />
-        <PostList posts={posts} />
-      </Layout>
+      <Layout
+        title={siteTitle}
+        left={postList}
+        right={tagsList}
+        top={<React.Fragment>
+          <SEO
+            title="All posts"
+            keywords={[`blog`, `gatsby`, `javascript`, `react`]}
+          />
+          <Bio />
+        </React.Fragment>}        
+      /> 
     )
   }
 }
@@ -46,6 +66,11 @@ export const pageQuery = graphql`
             title
           }
         }
+      }
+    }
+    tags: allMarkdownRemark(limit: 2000) {
+      group(field: frontmatter___tags) {
+        fieldValue
       }
     }
   }
