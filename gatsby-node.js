@@ -65,7 +65,7 @@ exports.createPages = ({ graphql, actions }) => {
         component: tagTemplate,
         context: {
           tag: tag.fieldValue,
-          tags: result.tagsGroup.group
+          tags: result.data.tagsGroup.group
         },
       })
     })
