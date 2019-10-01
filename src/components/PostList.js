@@ -15,6 +15,7 @@ export default class PostList extends React.Component {
             <li key={node.fields.slug}>
               <h3
                 style={{
+                  marginTop: rhythm(1),
                   marginBottom: rhythm(1 / 4),
                 }}
               >
