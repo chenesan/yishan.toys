@@ -5,26 +5,30 @@ import Bio from "../components/Bio";
 import Layout from "../components/Layout";
 import PostList from "../components/PostList"
 import SEO from "../components/seo";
+import TagsList from "../components/TagsList";
 
 const Tags = ({ pageContext, data, location }) => {
-  const { tag } = pageContext
+  const { tag, tags } = pageContext
   const { edges } = data.allMarkdownRemark
   const siteTitle = data.site.siteMetadata.title
+  const content = <React.Fragment>
+    <SEO
+      title={`posts about ${tag}`}
+      keywords={[`blog`, tag, `javascript`, `react`]}
+    />
+    <Bio />
+    <h2>Tag: {tag}</h2>
+    <PostList posts={edges} />
+  </React.Fragment>
+  const tagsList = <TagsList tags={tags} />
   return (
-    <Layout location={location} title={siteTitle}>
-      <SEO
-        title={`posts about ${tag}`}
-        keywords={[`blog`, `gatsby`, `javascript`, `react`]}
-      />
-      <Bio />
-      <h2>Tag: {tag}</h2>
-      <PostList posts={edges} />
-    </Layout>
+    <Layout title={siteTitle} left={content} right={tagsList} />
   )
 }
 Tags.propTypes = {
   pageContext: PropTypes.shape({
     tag: PropTypes.string.isRequired,
+    tags: PropTypes.array.isRequired,
   }),
   data: PropTypes.shape({
     allMarkdownRemark: PropTypes.shape({

@@ -60,8 +60,6 @@ class BlogPostTemplate extends React.Component {
       </ul>
     </React.Fragment>
 
-    console.log('context', this.props.pageContext)
-
     const tagsList = <TagsList tags={this.props.pageContext.tags} />;
 
     return (
