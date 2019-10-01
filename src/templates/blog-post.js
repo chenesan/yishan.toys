@@ -5,6 +5,7 @@ import Bio from '../components/Bio'
 import Layout from '../components/Layout'
 import SEO from '../components/seo'
 import { rhythm, scale } from '../utils/typography'
+import TagsList from '../components/TagsList';
 
 class BlogPostTemplate extends React.Component {
   render() {
@@ -12,7 +13,7 @@ class BlogPostTemplate extends React.Component {
     const siteTitle = this.props.data.site.siteMetadata.title
     const { previous, next } = this.props.pageContext
 
-    const left = <React.Fragment>
+    const content = <React.Fragment>
       <SEO title={post.frontmatter.title} description={post.excerpt} />
       <h1>{post.frontmatter.title}</h1>
       <p
@@ -59,10 +60,12 @@ class BlogPostTemplate extends React.Component {
       </ul>
     </React.Fragment>
 
+    console.log('context', this.props.pageContext)
+
+    const tagsList = <TagsList tags={this.props.pageContext.tags} />;
+
     return (
-      <Layout title={siteTitle} left={left}>
-        
-      </Layout>
+      <Layout title={siteTitle} left={content} right={tagsList} />
     )
   }
 }

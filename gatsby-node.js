@@ -52,12 +52,12 @@ exports.createPages = ({ graphql, actions }) => {
           slug: post.node.fields.slug,
           previous,
           next,
+          tags: result.data.tagsGroup.group
         },
       })
     })
 
     const tags = result.data.tagsGroup.group
-    console.log(tags)
     // Make tag pages
     tags.forEach(tag => {
       createPage({
@@ -65,6 +65,7 @@ exports.createPages = ({ graphql, actions }) => {
         component: tagTemplate,
         context: {
           tag: tag.fieldValue,
+          tags: result.tagsGroup.group
         },
       })
     })
