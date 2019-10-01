@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'gatsby'
 
 import { rhythm, scale } from '../utils/typography'
-import '../styles/global.css'
+import '../styles/index.scss'
 
 class Layout extends React.Component {
   render() {
@@ -35,24 +35,17 @@ class Layout extends React.Component {
           maxWidth: rhythm(32),
           padding: `${rhythm(1.5)} ${rhythm(3 / 4)}`,
         }}
+        class="main-layout"
       >
         {header}
         {top}
-        <div>
-          <div style={{ 
-            display: 'inline-block',
-            width: '70%',
-            verticalAlign: 'top',
-          }}>
+        <div className="container">
+          <section className="left">
             {left}
-          </div>
-          <div style={{
-            display: 'inline-block',
-            width: '30%',
-            verticalAlign: 'top',
-          }}>
+          </section>
+          <aside className="right">
             {right}
-          </div>
+          </aside>
         </div>
         <footer>
           © {new Date().getFullYear()}, Built with

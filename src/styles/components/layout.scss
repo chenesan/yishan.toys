@@ -1,0 +1,14 @@
+.main-layout {
+  .container {
+    display: flex;
+    > .left {
+      flex-basis: 70%;
+    }
+    > .right {
+      flex-basis: 30%;
+    }
+    @media screen and (max-width: 60em) {
+      display: block;
+    }
+  }
+}
