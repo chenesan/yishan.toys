@@ -13,7 +13,7 @@ class BlogPostTemplate extends React.Component {
     const siteTitle = this.props.data.site.siteMetadata.title
     const { previous, next } = this.props.pageContext
 
-    const content = <React.Fragment>
+    const content = <article className="main-post">
       <SEO title={post.frontmatter.title} description={post.excerpt} />
       <h1>{post.frontmatter.title}</h1>
       <p
@@ -58,7 +58,7 @@ class BlogPostTemplate extends React.Component {
           )}
         </li>
       </ul>
-    </React.Fragment>
+    </article>
 
     const tagsList = <TagsList tags={this.props.pageContext.tags} />;
 
