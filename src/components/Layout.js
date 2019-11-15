@@ -35,7 +35,7 @@ class Layout extends React.Component {
           maxWidth: rhythm(32),
           padding: `${rhythm(1.5)} ${rhythm(3 / 4)}`,
         }}
-        class="main-layout"
+        className="main-layout"
       >
         {header}
         {top}
