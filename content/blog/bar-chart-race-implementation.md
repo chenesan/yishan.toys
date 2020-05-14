@@ -4,7 +4,9 @@ date: '2020-05-14T22:00:00.000Z'
 tags: ["React", "programming", "Javascript"]
 ---
 
-## TODOs
+(前言：這篇文是今年一月的時候寫的，原本想再多寫一些東西，但現在看來這樣也足夠完整了。
+
+在實作時 react-spring v9 已經喊了好一陣子了，至今還在 rc 版本中，大家只好慢慢等了。)
 
 前一陣子 [bar chart race](https://app.flourish.studio/@flourish/bar-chart-race) 正夯，趁著有閒的時候也用 [react-spring](https://www.react-spring.io/) 和 [vx](https://vx-demo.now.sh) 做了一個。
 
