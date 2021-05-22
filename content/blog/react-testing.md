@@ -169,24 +169,33 @@ mount 的測法會直接呼叫 React.renderDOM 來 render component，對 render
 
 哪個才是較好的做法？筆者覺得可以從幾個地來探討：
 - 信心：測試過了，那程式對了嗎？我們得到想要的結果了嗎？
+
   對前端來說，最終且最重要的結果就是 DOM tree 是否正確。
   mount 在這一點沒有問題，因為我們最後斷言的正是 DOM tree，所以只要測試過了，代表結果就是正確的。
 
   shallow 則只能確定個別 component 的 render 給出了正確的 react element，但無法確定 child component 的 render 也是對的。要確定 child component 也是對的，必須也對 child component 做 shallow rendering。就理論來說，必須測試所有 component 才能確保最終 render 出來的 DOM 是對的，而且是間接的得知。
 
   此外，shallow 可能發生測試過了，但實際執行卻失敗的狀況(false positive)。以上面的 `<TodoList>` 為例，若 `<TodoItem>` 的 props 名稱改了，而忘了改 `<TodoList>` 的 render function，此時真的去 render `<TodoList>` 就會因為沒有代到新的 props 而出問題，但 `<TodoList>` 的測試卻還會是正確的。這就使得測試結果即使正確，我們仍然需要用其它方式來確定程式執行正確。
+
   因此就測試過了=程式對了這點來說，mount 會是好的多的選擇。 
+
 - 撰寫的容易程度
+
   mount 因為會執行完整的 rendering，SAT(System Under Tesst) 較大，需要的 mock 通常較多。通常 component 越上層，它需要的 mock 就會愈多，準備起來愈花力氣。
+
   相較之下，shallow render 因為只需要照顧單層 component 的依賴，SAT 小，寫起來較快且容易。
+
 - 可維護性
+
   兩者都有其難處。
   mount 的困難在於當 child component 的依賴變化時，測試必須跟著更新 mock，增加維護成本。
+
   shallow 則在於當 component render 的 react element 變更的時候，即使實際上最後 DOM 沒有變，測試還是會壞而需要修改，不利於 refactor。
+
 - 社群與工具
+
   這點 mount 大勝。
+
   原因是 React 官方再也不維護 shallow renderer，而 shallow renderer 也未完全支援 hooks，例如 `useEffet` 在 shallow renderer 中是不能正確執行的。而唯一支援 shallow rendering 測試方式的 `enzyme` 更新的速度也緩慢。
+
   相對來說 mount 的測試工具則有很多選擇，`enzyme` 裡面的 `mount()`、`react-testing-library`、甚至近期的 cypress component testing 等等。相比 `enzyme`，後兩者的專案較常更新，健康程度也較好。
-
-## 結論
-
