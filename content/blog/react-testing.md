@@ -242,4 +242,6 @@ it('Givent two todos, <TodoList> should render two <li>', () => {
 
   相對來說 mount 的測試工具則有很多選擇，`enzyme` 裡面的 `mount()`、`react-testing-library`、近期的 cypress component testing 等等，且都有持續在維護。
 
+## 結論
+
 就結論來說，我覺得大多數場合可以先考慮使用 mount，畢竟 shallow 對 hooks 的支援還不夠；而如果今天被測的 component 處於上層，要 mount 需要造的 mock 太多，而又只想測該段 component 發生的邏輯時，可以考慮用 shallow、或是將該段邏輯單獨抽離成函數來測。
