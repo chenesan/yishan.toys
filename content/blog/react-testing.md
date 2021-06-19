@@ -240,6 +240,6 @@ it('Givent two todos, <TodoList> should render two <li>', () => {
 
   原因是 React 官方再也不維護 shallow renderer，而 shallow renderer 也未完全支援 hooks，例如 [`useEffet` 在 shallow renderer 中不能正確執行](https://github.com/facebook/react/issues/15275)。而唯一支援 shallow rendering 測試方式的 `enzyme` 更新的速度最近也趨緩。
 
-  相對來說 mount 的測試工具則有很多選擇，`enzyme` 裡面的 `mount()`、`react-testing-library`、甚至近期的 cypress component testing 等等。
+  相對來說 mount 的測試工具則有很多選擇，`enzyme` 裡面的 `mount()`、`react-testing-library`、近期的 cypress component testing 等等，且都有持續在維護。
 
-## 結論
+就結論來說，我覺得大多數場合可以先考慮使用 mount，畢竟 shallow 對 hooks 的支援還不夠；而如果今天被測的 component 處於上層，要 mount 需要造的 mock 太多，而又只想測該段 component 發生的邏輯時，可以考慮用 shallow、或是將該段邏輯單獨抽離成函數來測。
