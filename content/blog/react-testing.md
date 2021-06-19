@@ -4,7 +4,8 @@ date: '2020-05-14T23:00:00.000Z'
 tags: ["React", "programming", "Javascript"]
 ---
 
-想寫這主題一陣子了，網路上講 component testing 的文章多不勝數，這裡整理筆者所知的幾種概念、做法和工具。各有好壞，讀者可以自行斟酌。
+想寫 component testing 一陣子了，這裡整理筆者所知的概念和工具。各有好壞，讀者可以自行斟酌。
+
 以下的文章會交替使用 component 測試 / UI 測試這兩個用詞。
 
 ## 在寫之前：UI 測試的高成本
@@ -32,15 +33,13 @@ UI / component test 相較於邏輯需要的 mock 更多。測一個 component�
 - 當 api 欄位變化的時候，就得去更新 fixture。
 - jsdom 有時缺少真實瀏覽器擁有的 api，只好自己準備或根本不能測。
 
-
-
-如上，UI 測試的維護成本很高。因此，在撰寫 UI 測試之前，得先思考這段測試保護的規格(UI)，價值是否真的這麼重要。如果已經有了 e2e 的保護，開發者是否要再撰寫 component test 值得想想。筆者並不是說不要寫 component testing。它當然有好處，例如重構時能夠避免破壞規格、輔助團隊伙伴了解 component 的用途等等，然而不可避的事實是，它的 cost 就是比較貴。
+如上，UI 測試的維護成本很高。因此，在撰寫 UI 測試之前，得先思考這段測試保護的 UI 規格，價值是否這麼重要。
 
 ## component test 的兩大流派：shallow & mount
 
 component 的測試方式可以分為兩種：
-- shallow rendering
-- mount rendering
+- shallow rendering(或簡稱 shallow)
+- full rendering(或簡稱 mount)
 
 讓我們以 todo list 為例，假設，我們有 `<TodoList>` 和 `<TodoItem>` 兩個 component，實作如下：
 
@@ -75,40 +74,36 @@ function TodoItem({ todo }) {
 
 ### shallow rendering
 
-shallow rendering 只會執行一層 component 的 render，對 render 回傳的 React element 做斷言。
+shallow rendering 只會執行一層 component 的 render，斷言該層 render 回傳的 React element 或發生的行為。
 
-例如:
+以上面的例子，假設我們想要測試 `<TodoList>` 是否在傳入 todos 的時候，有 render 出同樣數量的 `<TodoItem>`，就會寫出如下的測試程式碼(以 [enzyme](https://github.com/enzymejs/enzyme) 測試函式庫為例)：
 ```jsx
+import React from 'react';
+import { shallow } from 'enzyme';
+import TodoList from '../TodoList';
+import TodoItem from '../TodoItem';
 
-const todos = [
-  { id: '1', title: 'Read book' },
-  { id: '2', title: 'Play music' },
-];
+it('Givent two todos, <TodoList> should render two <TodoItem>', () => {
+  const todos = [
+    { id: '1', title: 'Read book' },
+    { id: '2', title: 'Play music' },
+  ];
 
-shallow(
-  <TodoList todos={todos}>
-);
+  const wrapper = shallow(
+    <TodoList todos={todos} />
+  );
 
+  expect(wrapper.find(TodoItem)).toHaveLength(2);
+});
 ```
 
-shallow render `<TodoList>` 的結果就會是:
+而因為它只執行一層 render，`<TodoItem>` 的 render 不會被執行，因此 render 的結果不會包含 `<TodoItem>` 的 `<li>`，下面的斷言會失敗：
 
 ```jsx
-<div>
-  <h1>Todo List</h1>
-  <ul>
-    <TodoItem key="1" todo={{ id: '1', title: 'Read book' }} />
-    <TodoItem key="2" todo={{ id: '2', title: 'Play Music' }} />
-  </ul>
-</div>
+expect(wrapper.find('li')).toHaveLength(2);
 ```
 
-這正是 `<TodoList>` 所回傳的 React element。而我們便可以對這串 React element tree 做一些斷言來測試 `<TodoList>` component 的實作是否正確，例如：
-- 裡面有兩個 `<TodoItem />`。
-- 第一個 `<TodoItem />` 的 `todo` prop 會是 `todos[0]`。
-注意到 shallow rendering 沒有去執行 `<TodoItem>` 的 render，而將它當作執行的結果用來斷言。
-
-shallow rendering 的目的在於確保個別 component 是否正確 render 出 react element，而不關心下一層 component 的 render 邏輯。
+shallow rendering 只關心個別 component 的 render 是否正確，而不關心下一層 component 的 render 邏輯。
 
 #### shallow = mock
 
@@ -133,69 +128,118 @@ function plusSelf(n) {
 expect(plusSelf(2)).toEqual(4)
 ```
 
-而 `shallow` 的測法等同於把 `plus` 這個 function 用 `jest.fn` mock 掉，並斷言 `plusSelf` 正確的把參數代入 `plus` 函數裡：
+而 `shallow` 的測法等同於把 `plus` 這個 function 用 `jest.fn` mock 掉，並斷言 `plusSelf` 正確的把參數代入 `plus` 函數呼叫：
 
 ```js
-import plus from 'plus.js';
+import plus from './plus';
+import plusSelf from './plusSelf';
 
-jest.mock('plus.js', () => jest.fn())
+jest.mock('./plus.js', () => jest.fn())
 
 // assert
 plusSelf(2);
 expect(plus).toBeCalledWith(2, 2);
 ```
 
-在這個簡單的例子裡，顯然前者的測試方式比較簡單。然而如果 `plus()` 有其它難以準備的依賴(例如需要 api server、 file system)，則後者是一個解法。
+顯然前者的測試方式比較簡單。然而如果 `plus()` 有難以準備的依賴(例如需要 api server、 file system)，後者是一個解法。
 
-### mount(full rendering)
+#### 支援的測試函式庫
 
-mount 的測法會直接呼叫 React.renderDOM 來 render component，對 render 後得到的 DOM tree 做斷言。
+早期 React 官方有提供 shallow renderer 支援用 shallow rendering 的方式測試，但隨著時間經過，[React 官方已經在 2020 年將 shallow renderer 移出 React repo](https://github.com/facebook/react/pull/18144)，而鼓勵 React 的使用者採用 mount 的方式測試，測 render 出的 DOM 結果。
 
-繼續沿用上述的例子，在 mount 的情形，得到的 result 就會是
+目前，只有 `enzyme` 能支援 shallow rendering 的測試方式，其背後也是使用被移出的 [`react-shallow-renderer`](https://github.com/enzymejs/react-shallow-renderer)。
 
-```html
-<div>
-  <h1>Todo List</h1>
-  <ul>
-    <li>Todo: Read book</li>
-    <li>Todo: Play Music</li>
-  </ul>
-</div>
+### full rendering
+
+full rendering 的測法會直接呼叫 `React.renderDOM` 來 render component，對 render 後得到的 DOM tree 做斷言。
+
+沿用上述的例子，採用 full rendering 的測試方式時，我們不再斷言 `<TodoList>` 會 render `<TodoItem>`；而是 斷言 render 出來的 DOM element。
+
+同樣以 enzyme 為例，會得到下列的測試程式碼：
+
+```jsx
+import React from 'react';
+import { mount } from 'enzyme';
+import TodoList from '../TodoList';
+
+it('Givent two todos, <TodoList> should render two <li>', () => {
+  const todos = [
+    { id: '1', title: 'Read book' },
+    { id: '2', title: 'Play music' },
+  ];
+
+  const wrapper = mount(
+    <TodoList todos={todos} />
+  );
+
+  expect(wrapper.find('li')).toHaveLength(2);
+});
 ```
 
-注意這裡是 DOM element，而不是 React element，由此你可以斷言 render 出來的 DOM 有兩個 `<li>`，裡面分別是兩個 todo 的內容。
+(實際上用 enzyme 時，用 `mount` 得到的 wrapper 同樣可以用來尋找 `<TodoItem>`，但這裡為了介紹測試的概念就不多談。)
+
+另一個現在流行的 React 測試函式庫 [`react-testing-library`](https://testing-library.com/docs/react-testing-library/intro) 則會像這樣：
+
+```jsx
+import React from 'react';
+import { screen, render } from '@testing-library/react';
+
+it('Givent two todos, <TodoList> should render two <li>', () => {
+  const todos = [
+    { id: '1', title: 'Read book' },
+    { id: '2', title: 'Play music' },
+  ];
+
+  render(<TodoList todos={todos} />)
+
+  expect(screen.getAllByRole('listitem')).toHaveLength(2);
+});
+```
+
+#### 支援的測試函式庫
+
+相較 shallow rendering，支援 full rendering 的測試函式庫就多得多，包含：
+- [enzyme](https://enzymejs.github.io/enzyme/)
+- [react-testing-library](https://testing-library.com/docs/react-testing-library/intro)
+- [cypress component testing](https://docs.cypress.io/guides/component-testing/introduction#What-is-Component-Testing)
+
+三者各有擅場。enzyme 提供大量的 query function(類似 jQuery)查找元素；react-testing-library 則透過文字內容、role 等貼近使用者的方式 query 元素；cypress component testing 則是可以在瀏覽器原生環境下 render component，並用 cypress 的測試框架寫測試。
 
 ### shallow vs mount
 
-哪個才是較好的做法？筆者覺得可以從幾個地來探討：
-- 信心：測試過了，那程式對了嗎？我們得到想要的結果了嗎？
+哪個才是較好的做法？筆者覺得可以從幾個點來探討：
 
-  對前端來說，最終且最重要的結果就是 DOM tree 是否正確。
-  mount 在這一點沒有問題，因為我們最後斷言的正是 DOM tree，所以只要測試過了，代表結果就是正確的。
+- 目的
 
-  shallow 則只能確定個別 component 的 render 給出了正確的 react element，但無法確定 child component 的 render 也是對的。要確定 child component 也是對的，必須也對 child component 做 shallow rendering。就理論來說，必須測試所有 component 才能確保最終 render 出來的 DOM 是對的，而且是間接的得知。
+  我們為 component 寫測試可能有幾種目的，不同目的下適用的程度也不同：
+  - 想要確保最終 render 出來的 DOM tree 是否正確。
+    mount 在這一點沒有問題，因為 mount 的結果正是 DOM tree，所以只要測試過了，代表結果就是正確的。
 
-  此外，shallow 可能發生測試過了，但實際執行卻失敗的狀況(false positive)。以上面的 `<TodoList>` 為例，若 `<TodoItem>` 的 props 名稱改了，而忘了改 `<TodoList>` 的 render function，此時真的去 render `<TodoList>` 就會因為沒有代到新的 props 而出問題，但 `<TodoList>` 的測試卻還會是正確的。這就使得測試結果即使正確，我們仍然需要用其它方式來確定程式執行正確。
+    shallow 則只能確定個別 component 的 render 給出了正確的 react element，但無法確定 child component 的 render 也是對的。要確定下一層 child component 的 rener 正確，必須也對 child component 做 shallow rendering。就理論來說，必須測試所有 component 才能確保最終 render 出來的 DOM 是對的，可能會非常費工且難以維護。
 
-  因此就測試過了=程式對了這點來說，mount 會是好的多的選擇。 
+    就這個目的來說 mount 是正確的工具。
 
-- 撰寫的容易程度
+  - 只想確定這一個 component 的邏輯正確
+    mount 在 component 下面 child component 不多的情況下沒有問題，但若 component 下有很深的 component tree 則可能因為 child component 的依賴需要造 mock、寫起來較困難。
 
-  mount 因為會執行完整的 rendering，SAT(System Under Tesst) 較大，需要的 mock 通常較多。通常 component 越上層，它需要的 mock 就會愈多，準備起來愈花力氣。
-
-  相較之下，shallow render 因為只需要照顧單層 component 的依賴，SAT 小，寫起來較快且容易。
+    shallow 不必考慮 child component 所以可以省掉這個麻煩，寫起來較快。
 
 - 可維護性
 
   兩者都有其難處。
+
   mount 的困難在於當 child component 的依賴變化時，測試必須跟著更新 mock，增加維護成本。
 
-  shallow 則在於當 component render 的 react element 變更的時候，即使實際上最後 DOM 沒有變，測試還是會壞而需要修改，不利於 refactor。
+  shallow 則在於當 component 的實作變更的時候(e.g. 把 child component 拆掉)，即使實際上最後 DOM 沒有變，測試還是會壞而需要修改，不利於 refactor。
+
+  shallow 還可能發生測試過了，但實際執行卻失敗的狀況(false positive)。以上面的 `<TodoList>` 為例，若 `<TodoItem>` 的 props 名稱改了，而忘了改 `<TodoList>` 的 render function，此時真的去 render `<TodoList>` 就會因為沒有代到新的 props 而出問題，但 `<TodoList>` 的測試卻還會是正確的。
 
 - 社群與工具
 
   這點 mount 大勝。
 
-  原因是 React 官方再也不維護 shallow renderer，而 shallow renderer 也未完全支援 hooks，例如 `useEffet` 在 shallow renderer 中是不能正確執行的。而唯一支援 shallow rendering 測試方式的 `enzyme` 更新的速度也緩慢。
+  原因是 React 官方再也不維護 shallow renderer，而 shallow renderer 也未完全支援 hooks，例如 [`useEffet` 在 shallow renderer 中不能正確執行](https://github.com/facebook/react/issues/15275)。而唯一支援 shallow rendering 測試方式的 `enzyme` 更新的速度最近也趨緩。
 
-  相對來說 mount 的測試工具則有很多選擇，`enzyme` 裡面的 `mount()`、`react-testing-library`、甚至近期的 cypress component testing 等等。相比 `enzyme`，後兩者的專案較常更新，健康程度也較好。
+  相對來說 mount 的測試工具則有很多選擇，`enzyme` 裡面的 `mount()`、`react-testing-library`、甚至近期的 cypress component testing 等等。
+
+
