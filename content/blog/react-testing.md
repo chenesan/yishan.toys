@@ -1,6 +1,6 @@
 ---
 title: React 的 component testing
-date: '2020-05-14T23:00:00.000Z'
+date: '2020-06-19T17:50:00.000Z'
 tags: ["React", "programming", "Javascript", "Testing"]
 ---
 
