@@ -1,7 +1,7 @@
 ---
-title: React 的開發者測試
+title: React 的 component testing
 date: '2020-05-14T23:00:00.000Z'
-tags: ["React", "programming", "Javascript"]
+tags: ["React", "programming", "Javascript", "Testing"]
 ---
 
 想寫 component testing 一陣子了，這裡整理筆者所知的概念和工具。各有好壞，讀者可以自行斟酌。
@@ -18,18 +18,18 @@ UI 相較於商業邏輯屬於更細節的部分，更容易有頻繁的改變�
 
 ### UI 測試容易壞掉
 
-通常 UI 的斷言是針對 output 出來的 tree(無論是 DOM 或是 React element tree)，透過 selector 找出想觀察的節點並斷言其狀態或內容。由於 UI 的 tree 很容易就會變得很深，要找到想觀察的節點就會變得困難。而 selector 若沒寫好，就容易因為不相關的 code change 而導致測試壞掉增加維護成本。
+通常 UI 的斷言是針對 output 出來的 tree(無論是 DOM 或是 React element)，透過 selector 找出想觀察的節點並斷言其狀態或內容。由於 UI 的 tree 很容易就會變得很深，要找到想觀察的節點就會變得困難。而 selector 若沒寫好，就容易因為不相關的 code change 而導致測試壞掉增加維護成本。
 
 ### 需要 mock，因此增加測試的複雜度和脆弱度
 
 UI / component test 相較於邏輯需要的 mock 更多。測一個 component，你需要的 mock 可能就有：
+- [jsdom，模擬瀏覽器的執行環境](https://github.com/jsdom/jsdom)
 - api mock
-- date mock
-- timer
-- 如果是在 node 環境測，則需要用 jsdom 來模擬瀏覽器的執行環境
+- 第三方服務的 library(e.g. google map)
+- [timer mock](https://jestjs.io/docs/timer-mocks)
 
 這些 mock 增加了測試的撰寫和維護成本，例如：
-- 需要準備額外的 mock，而不能直接 render component
+- 需要尋找 mock 的寫法和函式庫
 - 當 api 欄位變化的時候，就得去更新 fixture。
 - jsdom 有時缺少真實瀏覽器擁有的 api，只好自己準備或根本不能測。
 
@@ -212,8 +212,8 @@ it('Givent two todos, <TodoList> should render two <li>', () => {
 - 目的
 
   我們為 component 寫測試可能有幾種目的，不同目的下適用的程度也不同：
-  - 想要確保最終 render 出來的 DOM tree 是否正確。
-    mount 在這一點沒有問題，因為 mount 的結果正是 DOM tree，所以只要測試過了，代表結果就是正確的。
+  - 想要確保最終 render 出來的 DOM element 是否正確。
+    mount 在這一點沒有問題，因為 mount 的結果正是 DOM element，所以只要測試過了，代表結果就是正確的。
 
     shallow 則只能確定個別 component 的 render 給出了正確的 react element，但無法確定 child component 的 render 也是對的。要確定下一層 child component 的 rener 正確，必須也對 child component 做 shallow rendering。就理論來說，必須測試所有 component 才能確保最終 render 出來的 DOM 是對的，可能會非常費工且難以維護。
 
@@ -242,4 +242,4 @@ it('Givent two todos, <TodoList> should render two <li>', () => {
 
   相對來說 mount 的測試工具則有很多選擇，`enzyme` 裡面的 `mount()`、`react-testing-library`、甚至近期的 cypress component testing 等等。
 
-
+## 結論
