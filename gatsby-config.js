@@ -2,8 +2,8 @@ module.exports = {
   siteMetadata: {
     title: `A Blog`,
     author: `Yi-Shan, Chen`,
-    description: `偶爾記錄一些知道和不知道的事`,
-    siteUrl: `https://chenesan.github.io`,
+    description: `書寫程式(主要是前端)、書介、偶爾包含碎碎唸`,
+    siteUrl: `https://yishan.toys`,
     social: {
       github: `chenesan`,
     },

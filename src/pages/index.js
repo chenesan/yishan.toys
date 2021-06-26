@@ -35,8 +35,7 @@ class BlogIndex extends React.Component {
         right={tagsList}
         top={<React.Fragment>
           <SEO
-            title="All posts"
-            keywords={[`blog`, `gatsby`, `javascript`, `react`]}
+            keywords={[`blog`, `gatsby`, `javascript`, `react`, '前端', '書介', '書評', 'css']}
           />
           <Bio />
         </React.Fragment>}        
