@@ -1,6 +1,6 @@
 ---
 title: 【書介】了解你的陪審團 –– 《好問》
-date: '2021-06-29T17:50:00.000Z'
+date: '2021-06-27T12:50:00.000Z'
 tags: ["book"]
 coverImage: '../assets/images/book-doesnt-hurt-to-ask-cover.jpg'
 ---
