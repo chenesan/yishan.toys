@@ -2,9 +2,10 @@
 title: 【書介】了解你的陪審團 –– 《好問》
 date: '2021-06-29T17:50:00.000Z'
 tags: ["book"]
+coverImage: '../assets/images/book-doesnt-hurt-to-ask-cover.jpg'
 ---
 
-
+![《好問》書封](../assets/images/book-doesnt-hurt-to-ask-cover.jpg)
 
 一名女子遭受毆打施暴之後，最後離開了她的丈夫。某天，在她的朋友載著她和兩個孩子的回程路上，從後照鏡看到一輛車不尋常的尾隨，那正是她的前夫，手上拿著一把手槍。
 
