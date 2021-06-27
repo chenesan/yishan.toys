@@ -11,7 +11,7 @@ class BlogPostTemplate extends React.Component {
   render() {
     const post = this.props.data.markdownRemark
     const coverImage = post.frontmatter.coverImage
-    const image = coverImage ? coverImage.childImageSharp.fluid : null
+    const imageSrc = coverImage ? coverImage.childImageSharp.fluid.src : null
     const siteTitle = this.props.data.site.siteMetadata.title
     const { previous, next } = this.props.pageContext
 
@@ -19,7 +19,7 @@ class BlogPostTemplate extends React.Component {
       <SEO
         title={post.frontmatter.title}
         description={post.excerpt}
-        image={image}
+        image={imageSrc}
       />
       <h1>{post.frontmatter.title}</h1>
       <p
