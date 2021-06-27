@@ -10,11 +10,17 @@ import TagsList from '../components/TagsList';
 class BlogPostTemplate extends React.Component {
   render() {
     const post = this.props.data.markdownRemark
+    const coverImage = post.frontmatter.coverImage
+    const imageSrc = coverImage ? coverImage.childImageSharp.fluid.src : null
     const siteTitle = this.props.data.site.siteMetadata.title
     const { previous, next } = this.props.pageContext
 
     const content = <article className="main-post">
-      <SEO title={post.frontmatter.title} description={post.excerpt} />
+      <SEO
+        title={post.frontmatter.title}
+        description={post.excerpt}
+        image={imageSrc}
+      />
       <h1>{post.frontmatter.title}</h1>
       <p
         style={{
@@ -85,6 +91,13 @@ export const pageQuery = graphql`
       frontmatter {
         title
         date(formatString: "MMMM DD, YYYY")
+        coverImage {
+          childImageSharp {
+            fluid(maxWidth: 1200) {
+              ...GatsbyImageSharpFluid
+            }
+          }
+        }
       }
     }
   }
