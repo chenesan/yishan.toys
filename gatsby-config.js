@@ -1,9 +1,11 @@
+const siteUrl = 'https://yishan.toys';
+
 module.exports = {
   siteMetadata: {
     title: `A Blog`,
     author: `Yi-Shan, Chen`,
     description: `書寫程式(主要是前端)、書介、偶爾包含碎碎唸`,
-    siteUrl: `https://yishan.toys`,
+    siteUrl,
     social: {
       github: `chenesan`,
     },
@@ -81,5 +83,26 @@ module.exports = {
         trackingId: 'UA-75310497-1',
       },
     },
+    {
+      resolve: 'gatsby-plugin-sitemap',
+      options: {
+        query: `
+          {
+            allSitePage {
+              nodes {
+                path
+              }
+            }
+          }
+        `,
+        resolveSiteUrl: () => siteUrl,
+        resolvePages: ({ allSitePage: { nodes: allPages } }) => allPages,
+        serialize: ({ path }) => {
+          return {
+            url: path,
+          }
+        },
+      }
+    }
   ],
 }
