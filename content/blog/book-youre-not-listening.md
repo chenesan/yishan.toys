@@ -2,7 +2,7 @@
 title: 【書介】你有好好聽嗎 –– 《你都沒在聽：科技讓交談愈來愈容易，人卻愈來愈不會聆聽。聆聽不但給別人慰藉，也給自己出路》
 date: '2021-07-25T16:00:00.000Z'
 tags: ["book"]
-excerpt: 你上次被別人打斷說話是什麼時候？或者，你是打斷別人說話的那個人？
+description: 你上次被別人打斷說話是什麼時候？或者，你是打斷別人說話的那個人？
 coverImage: '../assets/images/book-youre-not-listening-cover.jpg'
 ---
 
