@@ -18,7 +18,7 @@ class BlogPostTemplate extends React.Component {
     const content = <article className="main-post">
       <SEO
         title={post.frontmatter.title}
-        description={post.excerpt}
+        description={post.frontmatter.description}
         image={imageSrc}
       />
       <h1>{post.frontmatter.title}</h1>
@@ -98,6 +98,7 @@ export const pageQuery = graphql`
             }
           }
         }
+        description
       }
     }
   }

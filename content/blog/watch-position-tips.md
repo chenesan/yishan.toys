@@ -2,7 +2,7 @@
 title: 我錯了，取使用者定位沒這麼簡單。
 date: '2021-07-10T17:30:00.000Z'
 tags: ["frontend", "programming"]
-excerpt: '聊聊最近用 navigator.geolcation.watchPosition 監聽使用者定位踩到的雷；safari 加油啊。'
+description: '聊聊最近用 navigator.geolcation.watchPosition 監聽使用者定位踩到的雷；safari 加油啊。'
 ---
 
 ## 初見 [`navigator.geolocation.watchPosition`](https://developer.mozilla.org/zh-TW/docs/Web/API/Geolocation/watchPosition)
