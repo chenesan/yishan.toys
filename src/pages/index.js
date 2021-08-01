@@ -10,7 +10,8 @@ import PostList from '../components/PostList';
 class BlogIndex extends React.Component {
   render() {
     const { data } = this.props
-    const siteTitle = data.site.siteMetadata.title
+    const siteTitle = data.site.siteMetadata.title;
+    const description = data.site.siteMetadata.description;
     const posts = data.allMarkdownRemark.edges
     const tags = data.tags.group
     const postList = <PostList posts={posts} />;
@@ -35,6 +36,8 @@ class BlogIndex extends React.Component {
         right={tagsList}
         top={<React.Fragment>
           <SEO
+            title={siteTitle}
+            description={description}
             keywords={[`blog`, `gatsby`, `javascript`, `react`, '前端', '書介', '書評', 'css']}
           />
           <Bio />
