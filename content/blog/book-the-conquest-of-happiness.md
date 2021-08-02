@@ -21,7 +21,7 @@ coverImage: '../assets/images/book-the-conquest-of-happiness.jpg'
 
 ---
 
-數學家與哲學家伯特蘭．羅素在[《幸福之路》](https://www.books.com.tw/products/0010855818)這本小書向我們說，幸福是可能的，只要我們停止過分關注自身，並試著關注外界的事物。
+數學家與哲學家伯特蘭．羅素在<a href="https://www.taaze.tw/apredir.html?150626301/https://www.taaze.tw/products/11100905830.html?" target="_blank">《幸福之路》</a>這本小書向我們說，幸福是可能的，只要我們停止過分關注自身，並試著關注外界的事物。
 
 什麼是過分關注自身？羅素提出三種過度關注自身的形式：罪人、自戀者、自大狂。
 

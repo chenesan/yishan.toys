@@ -8,7 +8,7 @@ coverImage: '../assets/images/book-youre-not-listening-cover.jpg'
 
 ![《你都沒在聽》書封](../assets/images/book-youre-not-listening-cover.jpg)
 
-初次看到[《你都沒在聽》](https://www.books.com.tw/products/0010870927)，以為書名是出版社加油添醋過的(例如這幾年流行的「深度...力」，原名可能和深度一點關係都沒有唷，或許出版社發現台灣人就愛深度吧XD)，結果真的不是，原名就叫《You're Not Listening》。
+初次看到<a href="https://www.taaze.tw/apredir.html?150626301/https://www.taaze.tw/products/11100918546.html?" target="_blank">《你都沒在聽︰科技讓交談愈來愈容易，人卻愈來愈不會聆聽。聆聽不但給別人慰藉，也給自己出路》</a>，以為書名是出版社加油添醋過的(例如這幾年流行的「深度...力」，原名可能和深度一點關係都沒有唷，或許出版社發現台灣人就愛深度吧XD)，結果真的不是，原名就叫《You're Not Listening》。
 
 這本書由十幾篇的小短文組成，從各種面向談傾聽是什麼、而我們為何難以傾聽。每個章節的份量不多，可以分開來讀，很適合一點一點慢慢讀完。
 
