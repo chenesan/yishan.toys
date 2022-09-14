@@ -9,24 +9,27 @@ export default class PostList extends React.Component {
     return (
       <ul>
         <h2>文章列表</h2>
-        {posts.map(({ node }) => {
-          const title = node.frontmatter.title || node.fields.slug
-          return (
-            <li key={node.fields.slug}>
-              <h3
-                style={{
-                  marginTop: rhythm(1),
-                  marginBottom: rhythm(1 / 4),
-                }}
-              >
-                <Link style={{ boxShadow: `none` }} to={node.fields.slug}>
-                  {title}
-                </Link>
-              </h3>
-              <small>{node.frontmatter.date}</small>
-            </li>
-          )
-        })}
+        {posts
+          .filter(({ node }) => !node.frontmatter.hidden)
+          .map(({ node }) => {
+            const title = node.frontmatter.title || node.fields.slug
+            return (
+              <li key={node.fields.slug}>
+                <h3
+                  style={{
+                    marginTop: rhythm(1),
+                    marginBottom: rhythm(1 / 4),
+                  }}
+                >
+                  <Link style={{ boxShadow: `none` }} to={node.fields.slug}>
+                    {title}
+                  </Link>
+                </h3>
+                <small>{node.frontmatter.date}</small>
+              </li>
+            )
+          }
+        )}
       </ul>
     );
   }
