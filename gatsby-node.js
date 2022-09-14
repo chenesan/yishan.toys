@@ -22,6 +22,7 @@ exports.createPages = ({ graphql, actions }) => {
               frontmatter {
                 title,
                 tags
+                hidden
               }
             }
           }
@@ -41,7 +42,7 @@ exports.createPages = ({ graphql, actions }) => {
     // Create blog posts pages.
     const posts = result.data.postsRemark.edges
 
-    posts.forEach((post, index) => {
+    posts.filter(post => !post.node.frontmatter.hidden).forEach((post, index) => {
       const previous = index === posts.length - 1 ? null : posts[index + 1].node
       const next = index === 0 ? null : posts[index - 1].node
 
